@@ -1,4 +1,4 @@
-const Order = require("../models/orderModel")
+const Order = require('../models/orderModel')
 
 module.exports.controller = {
     orderPostController: async (req, res) => {
@@ -46,7 +46,7 @@ module.exports.controller = {
     orderDeleteController: async (req, res) => {
         try {
             const data = await Order.findByIdAndRemove(req.params.id)
-            res.json("Удаленно")
+            res.json('Удаленно')
         } catch (error) {
             res.json(error.message);
         }
