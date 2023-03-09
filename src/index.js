@@ -14,8 +14,8 @@ const { patchBasket, getBasket, deleteBooksIsBasket } = require('./bot_database/
 
 require('dotenv').config()
 
-let order = Boolean
-
+let order = Boolean 
+ 
 // Работа с MongoDB================>
 const app = express()
 
@@ -54,7 +54,6 @@ const start = async () => {
         const { text } = msg;
         const { message_id } = msg;
 
-        const AdminChatId = -884026725
 
         switch (text) {
             case '/start':
@@ -112,7 +111,7 @@ const start = async () => {
                 break
             case 'Связаться с поддержкой':
                 await bot.sendMessage(id, 'Подождите немного я отправлю уведомление как только освободится к вам, подойдет наш специалист', key().options.closeTheKeyboard)
-                await bot.forwardMessage(AdminChatId, id, message_id)
+                await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id)
                 break
             case 'Закрыть помощник':
                 await bot.sendMessage(id, 'Помощник закрыт!', key().options.closeTheKeyboard)
@@ -121,7 +120,7 @@ const start = async () => {
 
                 if (username !== 'HeIIoW0RID') {
                     if (!order) {
-                        await bot.forwardMessage(AdminChatId, id, message_id)
+                        await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id)
                     }
 
                 } else
@@ -138,7 +137,7 @@ const start = async () => {
                         if (msg.reply_to_message) {
                             if (username === 'HeIIoW0RID') {
                                 if (msg.voice) {
-                                    await bot.forwardMessage(msg.reply_to_message.forward_from.id, AdminChatId, message_id, { drop_author: false })
+                                    await bot.forwardMessage(msg.reply_to_message.forward_from.id, process.env.ADMIN_CHAT, message_id, { drop_author: false })
                                 } else {
                                     await bot.sendMessage(msg.reply_to_message.forward_from.id, text)
 
@@ -155,7 +154,6 @@ const start = async () => {
 
     bot.on('callback_query', query => {
         let data = JSON.parse(query.data)
-        // console.log(query);
         try {
             const { username } = query.from
             const { type, book } = data

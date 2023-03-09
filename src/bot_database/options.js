@@ -99,6 +99,6 @@ function key(data, username) {
 
 
 }
-
+ 
 
 module.exports = { key }
