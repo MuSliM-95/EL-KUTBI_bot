@@ -169,7 +169,6 @@ const start = async () => {
             }
             else if (type === 'DELETE_BOOK') {
                 deleteBooksIsBasket(book, username, bot, id)
-            
                 bot.answerCallbackQuery({
                     callback_query_id: query.id,
                     text: 'Удаленно'

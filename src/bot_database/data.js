@@ -58,38 +58,45 @@ module.exports = {
 
         getBooksHtml: function getBooks(books) {
             const html = books.map(el => {
-                console.log(el);
+                // console.log(el);
                 return `/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language}`
 
             }).join('\n')
             return html
         },
         getBasketHtml: function getBasket(basketBooks) {
+            let html
+            if (basketBooks.length === 0) {
+                return html = `<strong>Корзина</strong>\nКорзина пуста`
 
-            const html = basketBooks.map(el => {
-                return `<strong>Корзина</strong>\n/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language}`
+            }
+            if (basketBooks) {
+                return html = basketBooks.map(el => {
+                    return `<strong>Корзина</strong>\n/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language}`
+                }).join('\n')
+            } else {
+                return html = `<strong>Корзина</strong>\nКорзина пуста`
+            }
 
-            }).join('\n')
-            return html
         },
 
 
-        getBookHtml:  function getBook(book, basketUser) {
-
+        getBookHtml: function getBook(book, basketUser) {
             let addDelete = 'Добавить в корзину'
             let TYPE = 'ADD_BOOK'
             basketUser.basket.map(el => {
-                if (el._id.toString() === book._id.toString()) {
+                if (el.toString() === book._id.toString()) {
                     addDelete = 'Удалить из корзины'
-                   return TYPE = 'DELETE_BOOK'
-                    
-                } else if(el._id.toString() !== book._id.toString()) {
+                    return TYPE = 'DELETE_BOOK'
+
+                } else if (el.toString() !== book._id.toString()) {
                     console.log(1);
                     addDelete = 'Добавить в корзину'
-                   return TYPE = 'ADD_BOOK'
+                    return TYPE = 'ADD_BOOK'
                 }
+                return addDelete
             })
-          return  books = {
+            return books = {
                 parse_mode: 'HTML',
                 caption: `<strong>Название:</strong> <em>${book.name}</em>\n<strong>Цена:</strong> <em>${book.price}р</em>\n<strong>Язык:</strong> ${book.language}`,
                 reply_markup: {
@@ -109,7 +116,7 @@ module.exports = {
                 }
 
             }
-        
+
         },
 
         getProductsHtml: function getBooks(products) {
