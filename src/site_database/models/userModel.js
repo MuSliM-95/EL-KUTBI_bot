@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId
     },
 
-})
+}) 
 
 const User = mongoose.model('User', userSchema)
 

@@ -11,7 +11,7 @@ module.exports.BooksController = {
                 image: filename,
                 imageSrc: req.file ? req.file.path : '',
                 name,
-                id: books + 1,
+                // id: books + 1,
                 language,
                 price,
                 quantity

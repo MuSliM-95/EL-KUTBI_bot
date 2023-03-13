@@ -11,9 +11,9 @@ async function patchBasket(book_id, userName, bot, id) {
         const basketUser = await Basket.findOneAndUpdate({ userName }, {
             $push: { basket: book_id }
         })
-        getBasket(bot, id, userName)
+       await getBasket(bot, id, userName)
     } catch (error) {
-        console.log(error.message);
+        throw Error(error.message)
     }
 
 }
@@ -25,9 +25,9 @@ async function deleteBooksIsBasket(book_id, userName, bot, id) {
          await Basket.findOneAndUpdate({ userName }, {
             basket: newBasket
         }, { new: true })
-        getBasket(bot, id, userName)
+       await getBasket(bot, id, userName)
     } catch (error) {
-        console.log(error.message);
+        throw Error(error.message)
     }
 
 }
@@ -42,7 +42,7 @@ async function getBasket(bot, id, userName) {
         })
         await bot.sendMessage(id, telegramGroups.getBasketHtml(basketBooks), { parse_mode: 'HTML' })
     } catch (error) {
-        console.log(error.message);
+        throw Error(error.message)
     }
 
 }

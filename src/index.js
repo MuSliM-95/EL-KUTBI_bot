@@ -6,7 +6,7 @@ const cors = require('cors');
 const { key } = require('./bot_database/options')
 const { telegramGroups } = require('./bot_database/data')
 const { createOrder, orderGet, deleteOrderGet } = require('./bot_database/asyncFunction/orderAsync');
-const { getBooks, getBooksLanguage, getId, getBooksId } = require('./bot_database/asyncFunction/booksAsync');
+const { getBooks, getBooksLanguage, getBookId } = require('./bot_database/asyncFunction/booksAsync');
 const { getProduct } = require('./bot_database/asyncFunction/otherProductsAsync');
 const { createUser } = require('./bot_database/asyncFunction/userAsync');
 const { patchBasket, getBasket, deleteBooksIsBasket } = require('./bot_database/asyncFunction/basketAsync');
@@ -34,9 +34,9 @@ app.listen(process.env.PORT, () => {
     console.log(
         `The server is started successfully: http://localhost:${process.env.PORT}`
     );
-});
+});  
 // ================================>
-
+  
 
 
 const bot = new TelegramApi(process.env.TOKEN, { polling: true })
@@ -60,7 +60,7 @@ const start = async () => {
                 await bot.sendMessage(id, telegramGroups.infoFunction(first_name), username === 'HeIIoW0RID' ? key().admin_keyboardСontainer : key().options);
                 createUser(username)
                 break
-            case await getId(bot, id, text, username):
+            case await getBookId(bot, id, text, username):
                 break
             case 'Главное меню':
                 await bot.sendMessage(id, 'Вы вернулись на главное меню', username === 'HeIIoW0RID' ? key().admin_keyboardСontainer : key().options);
@@ -75,10 +75,10 @@ const start = async () => {
                 })
                 break
             case 'Книги':
-                await getBooks(bot, id, text, username)
+                await getBooks(bot, id)
                 break
             case 'Все книги':
-                await getBooks(bot, id, text, username)
+                await getBooks(bot, id)
                 break
             case 'Все товары':
                 await bot.sendMessage(id, 'Выберите что вам нужно', key().all_products)
@@ -97,7 +97,7 @@ const start = async () => {
                 break
             case 'Nefertari':
                 await getProduct(bot, id)
-                break
+                break 
             case 'Оформить заказ':
                 order = true,
                     bot.sendMessage(id, telegramGroups.orderSample, {
@@ -105,7 +105,7 @@ const start = async () => {
                     })
                 // patchUser(username)
                 break
-            case 'Отменить заказ':
+            case 'Отменить заказ': 
                 deleteOrderGet(username)
 
                 break
@@ -116,7 +116,7 @@ const start = async () => {
             case 'Закрыть помощник':
                 await bot.sendMessage(id, 'Помощник закрыт!', key().options.closeTheKeyboard)
                 break
-            default:
+            default:   
 
                 if (username !== 'HeIIoW0RID') {
                     if (!order) {
@@ -152,7 +152,7 @@ const start = async () => {
 
     })
 
-    bot.on('callback_query', query => {
+    bot.on('callback_query', async query  => {
         let data = JSON.parse(query.data)
         try {
             const { username } = query.from
@@ -160,19 +160,23 @@ const start = async () => {
             const {id} = query.message.chat
         
             if (type === 'ADD_BOOK') {
-                patchBasket(book, username, bot, id)
-                bot.answerCallbackQuery({
+               await patchBasket(book, username, bot, id)
+             await   bot.answerCallbackQuery({
                     callback_query_id: query.id,
                     text: 'Добавлено'
                 })
 
             }
             else if (type === 'DELETE_BOOK') {
-                deleteBooksIsBasket(book, username, bot, id)
-                bot.answerCallbackQuery({
+                // console.log(1);
+             await   deleteBooksIsBasket(book, username, bot, id)
+               await bot.answerCallbackQuery({
                     callback_query_id: query.id,
                     text: 'Удаленно'
                 })
+            }
+            else if (type === 'BOOKS') {
+                await getBooks(bot, id)
             }
         } catch (error) {
             console.log(error.message);
