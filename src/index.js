@@ -113,7 +113,7 @@ const start = async () => {
                 await bot.sendMessage(id, 'Подождите немного я отправлю уведомление как только освободится к вам, подойдет наш специалист', key().options.closeTheKeyboard)
                 await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id)
                 break
-            case 'Закрыть помощник':
+            case 'Закрыть помощника':
                 await bot.sendMessage(id, 'Помощник закрыт!', key().options.closeTheKeyboard)
                 break
             default:   

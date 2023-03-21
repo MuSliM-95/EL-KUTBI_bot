@@ -16,7 +16,7 @@ module.exports = {
     `
         },
 
-
+ 
         deliveryAndPrices: `
         <strong>Доставка</strong> 
 

@@ -1,5 +1,5 @@
 
-function key(data, username) {
+function key() {
 
 
     return keyboardСontainer = {
@@ -12,7 +12,7 @@ function key(data, username) {
                     [{ text: 'Все товары' }],
                     [{ text: 'Показать корзину' }],
                     [{ text: 'Связаться с поддержкой' }],
-                    [{ text: 'Закрыть помошника' }]
+                    [{ text: 'Закрыть помощника' }]
 
                 ]
             },
@@ -57,6 +57,7 @@ function key(data, username) {
                     [{ text: 'Язык: Арабский' }],
                     [{ text: 'Язык: Русский' }],
                     [{ text: 'Все книги' }],
+                    [{ text: 'Оформить заказ', web_app: { url: 'https://resonant-sherbet-3755cb.netlify.app/header' } }],
                     [{ text: 'Показать корзину' }],
                     [{ text: 'Назад' }]
                 ]
@@ -99,6 +100,6 @@ function key(data, username) {
 
 
 }
- 
+
 
 module.exports = { key }
