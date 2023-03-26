@@ -9,7 +9,7 @@ function key() {
                 keyboard: [
                     [{ text: 'و عليكم السلام ورحمة الله وبركاته' }],
                     [{ text: 'Доставка и цены' }],
-                    [{ text: 'Все товары' }],
+                    [{ text: 'Оформить заказ', web_app: {url:'https://dazzling-donut-b7cfda.netlify.app/'} }],
                     [{ text: 'Показать корзину' }],
                     [{ text: 'Связаться с поддержкой' }],
                     [{ text: 'Закрыть помощника' }]
@@ -30,7 +30,6 @@ function key() {
                 keyboard: [
                     [{ text: 'و عليكم السلام ورحمة الله وبركاته' }],
                     [{ text: 'Доставка и цены' }],
-                    [{ text: 'Все товары' }],
                     [{ text: 'Закрыть помощник' }],
 
 
@@ -39,63 +38,7 @@ function key() {
 
 
         },
-        all_products: {
-            parse_mode: 'HTML',
-
-            reply_markup: {
-                keyboard: [
-                    [{ text: 'Книги' }, { text: 'Nefertari' }],
-                    [{ text: 'Главное меню' }]
-                ]
-            }
-        },
-        books_keyboard: {
-            parse_mode: 'HTML',
-
-            reply_markup: {
-                keyboard: [
-                    [{ text: 'Язык: Арабский' }],
-                    [{ text: 'Язык: Русский' }],
-                    [{ text: 'Все книги' }],
-                    [{ text: 'Оформить заказ', web_app: { url: 'https://resonant-sherbet-3755cb.netlify.app/header' } }],
-                    [{ text: 'Показать корзину' }],
-                    [{ text: 'Назад' }]
-                ]
-            }
-        },
-        r_books_keyboard: {
-            parse_mode: 'HTML',
-
-            reply_markup: {
-                keyboard: [
-                    [{ text: 'Язык: Арабский' }],
-                    [{ text: 'Все книги' }],
-                    [{ text: 'Показать корзину' }],
-                    [{ text: 'Назад' }]
-                ]
-            }
-        },
-        a_books_keyboard: {
-            parse_mode: 'HTML',
-
-            reply_markup: {
-                keyboard: [
-                    [{ text: 'Язык: Русский' }],
-                    [{ text: 'Все книги' }],
-                    [{ text: 'Показать корзину' }],
-                    [{ text: 'Назад' }]
-                ]
-            }
-        },
-        products_keyboard: {
-            parse_mode: 'HTML',
-
-            reply_markup: {
-                keyboard: [
-                    [{ text: 'Назад' }]
-                ]
-            }
-        }
+     
     }
 
 

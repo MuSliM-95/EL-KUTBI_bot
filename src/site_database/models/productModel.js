@@ -17,10 +17,9 @@ const productSchema = mongoose.Schema({
         required: true
     },
     id: Number,
-    country: {
-        type: String,
-        default: 'Египет'
-    },
+    country: String,
+    language: String,
+
     price: {
         type: Number,
         required: true
@@ -30,10 +29,9 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-    firm: {
-        type: String,
-        default: 'Nefertari'
-    }
+    firm: String,
+    Author: String,
+    productType: String
 })
 
 const Product = mongoose.model('Product', productSchema)

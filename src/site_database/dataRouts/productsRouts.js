@@ -4,6 +4,7 @@ const upload = require('../middleWares/upload')
 
 const router = Router()
 
-// router.post('/products/post', upload.single('image'),   ProductController.postProduct)
+router.get('/products', ProductController.getProducts)
+router.post('/products/post', upload.single('image'),   ProductController.postProduct)
 
-module.exports = router
+module.exports = router 

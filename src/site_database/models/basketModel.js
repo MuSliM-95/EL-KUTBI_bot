@@ -6,7 +6,7 @@ const basketSchema = mongoose.Schema({
         unique: true
     },
     basket: [{
-        ref: 'Books',
+        ref: 'Product',
         type: mongoose.SchemaTypes.ObjectId
     }],
 

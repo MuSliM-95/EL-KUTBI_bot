@@ -6,14 +6,12 @@ const cors = require('cors');
 const { key } = require('./bot_database/options')
 const { telegramGroups } = require('./bot_database/data')
 const { createOrder, orderGet, deleteOrderGet } = require('./bot_database/asyncFunction/orderAsync');
-const { getBooks, getBooksLanguage, getBookId } = require('./bot_database/asyncFunction/booksAsync');
-const { getProduct } = require('./bot_database/asyncFunction/otherProductsAsync');
 const { createUser } = require('./bot_database/asyncFunction/userAsync');
-const { patchBasket, getBasket, deleteBooksIsBasket } = require('./bot_database/asyncFunction/basketAsync');
+const { getBasket } = require('./bot_database/asyncFunction/basketAsync');
 
 
 require('dotenv').config()
-
+ 
 let order = Boolean 
  
 // Работа с MongoDB================>
@@ -24,10 +22,10 @@ app.use(express.json());
 app.use(cors())
 
 app.use(require('./site_database/dataRouts'))
-// app.use('/imageBooks', express.static('imageBooks'));
+app.use('/src/site_database/imageBooks', express.static('src/site_database/imageBooks'));
 
 mongoose.connect(process.env.MONGO_SERVER)
-    .then(() => console.log('The server is started'))
+    .then(() => console.log('The server is started')) 
     .catch(() => console.log('Server error MONGO'));
 
 app.listen(process.env.PORT, () => {
@@ -60,11 +58,6 @@ const start = async () => {
                 await bot.sendMessage(id, telegramGroups.infoFunction(first_name), username === 'HeIIoW0RID' ? key().admin_keyboardСontainer : key().options);
                 createUser(username)
                 break
-            case await getBookId(bot, id, text, username):
-                break
-            case 'Главное меню':
-                await bot.sendMessage(id, 'Вы вернулись на главное меню', username === 'HeIIoW0RID' ? key().admin_keyboardСontainer : key().options);
-                break
             case 'و عليكم السلام ورحمة الله وبركاته':
                 await bot.sendMessage(id, 'Чем я могу вам помочь?')
                 break
@@ -74,41 +67,11 @@ const start = async () => {
                     disable_web_page_preview: true
                 })
                 break
-            case 'Книги':
-                await getBooks(bot, id)
-                break
-            case 'Все книги':
-                await getBooks(bot, id)
-                break
-            case 'Все товары':
-                await bot.sendMessage(id, 'Выберите что вам нужно', key().all_products)
-                break
+            
             case 'Показать корзину':
                 getBasket(bot, id, username)
                 break
-            case 'Язык: Арабский':
-                await getBooksLanguage(id, text, bot)
-                break
-            case 'Язык: Русский':
-                await getBooksLanguage(id, text, bot)
-                break
-            case 'Назад':
-                await bot.sendMessage(id, 'Вы вернулись, на один шаг назад', key().all_products)
-                break
-            case 'Nefertari':
-                await getProduct(bot, id)
-                break 
-            case 'Оформить заказ':
-                order = true,
-                    bot.sendMessage(id, telegramGroups.orderSample, {
-                        parse_mode: 'HTML',
-                    })
-                // patchUser(username)
-                break
-            case 'Отменить заказ': 
-                deleteOrderGet(username)
 
-                break
             case 'Связаться с поддержкой':
                 await bot.sendMessage(id, 'Подождите немного я отправлю уведомление как только освободится к вам, подойдет наш специалист', key().options.closeTheKeyboard)
                 await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id)
@@ -152,36 +115,27 @@ const start = async () => {
 
     })
 
-    bot.on('callback_query', async query  => {
-        let data = JSON.parse(query.data)
-        try {
-            const { username } = query.from
-            const { type, book } = data
-            const {id} = query.message.chat
+    // bot.on('callback_query', async query  => {
+    //     let data = JSON.parse(query.data)
+    //     try {
+    //         const { username } = query.from
+    //         const { type, book } = data
+    //         const {id} = query.message.chat
         
-            if (type === 'ADD_BOOK') {
-               await patchBasket(book, username, bot, id)
-             await   bot.answerCallbackQuery({
-                    callback_query_id: query.id,
-                    text: 'Добавлено'
-                })
+    //         if (type === 'ADD_BOOK') {
+             
 
-            }
-            else if (type === 'DELETE_BOOK') {
-                // console.log(1);
-             await   deleteBooksIsBasket(book, username, bot, id)
-               await bot.answerCallbackQuery({
-                    callback_query_id: query.id,
-                    text: 'Удаленно'
-                })
-            }
-            else if (type === 'BOOKS') {
-                await getBooks(bot, id)
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
+    //         }
+    //         else if (type === 'DELETE_BOOK') {
 
-    })
+    //         }
+    //         else if (type === 'BOOKS') {
+             
+    //         }
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+
+    // })
 }
 start()

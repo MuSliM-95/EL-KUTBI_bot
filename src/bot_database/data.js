@@ -15,9 +15,9 @@ module.exports = {
     
     `
         },
-
  
-        deliveryAndPrices: `
+ 
+        deliveryAndPrices: ` 
         <strong>Доставка</strong> 
 
 <em>🚐 До Берката бесплатно</em>  
@@ -56,23 +56,16 @@ module.exports = {
          `
         },
 
-        getBooksHtml: function (books) {
-            const html = books.map(el => {
-                // console.log(el);
-                return `/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language}`
-
-            }).join('\n')
-            return html
-        },
-        getBasketHtml: function (basketBooks) {
+      
+        getBasketHtml: function (basketProducts) {
             let html
-            if (basketBooks.length === 0) {
+            if (basketProducts.length === 0) {
                 return html = `<strong>Корзина</strong>\nКорзина пуста`
 
             }
-            if (basketBooks) {
-                return html = basketBooks.map(el => {
-                    return `<strong>Корзина</strong>\n/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language}`
+            if (basketProducts) {
+                return html = basketProducts.map(el => {
+                    return `<strong>Корзина</strong>\n/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language || el.country}`
                 }).join('\n')
             } else {
                 return html = `<strong>Корзина</strong>\nКорзина пуста`
@@ -81,52 +74,6 @@ module.exports = {
         },
 
 
-        getBookHtml: function (book, basketUser) {
-            let addDelete = 'Добавить в корзину'
-            let TYPE = 'ADD_BOOK'
-            console.log(basketUser.basket);
-            console.log(book._id);
-            basketUser.basket.some(el => {
-                if (el.toString() === book._id.toString()) {
-                    console.log(1);
-                    TYPE = 'DELETE_BOOK'
-                    return addDelete = 'Удалить из корзины'
-                } else if (el.toString() !== book._id.toString()) {
-                    TYPE = 'ADD_BOOK'
-                    addDelete = 'Добавить в корзину'
-                }
-            })
-            return books = {
-                parse_mode: 'HTML',
-                caption: `<strong>Название:</strong> <em>${book.name}</em>\n<strong>Цена:</strong> <em>${book.price}р</em>\n<strong>Язык:</strong> ${book.language}`,
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            {
-                                text: addDelete, callback_data: JSON.stringify({
-                                    type: TYPE,
-                                    book: book._id
-                                })
-                            }
-                        ],
-                        [
-                            { text: 'Книги', callback_data: JSON.stringify({
-                                type: 'BOOKS'
-                            }) } 
-                        ]
-                    ]
-                }
-
-            }
-
-        },
-
-        getProductsHtml: function (products) {
-            const html = products.map(el => {
-                `/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Страна:</strong> ${el.country} <strong>Фирма:</strong> <em>${el.firm}</em>`
-            }).join('\n')
-            return html
-        }
 
     }
 }

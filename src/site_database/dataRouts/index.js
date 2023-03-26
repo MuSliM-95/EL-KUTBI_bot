@@ -4,7 +4,6 @@ const router = Router()
 
 
 router.use(require('./orderRouts'))
-router.use(require('./booksRouts'))
 router.use(require('./productsRouts'))
 
 
