@@ -26,6 +26,7 @@ app.use(cors())
 app.use(require('./site_database/dataRouts'))
 app.use('/src/site_database/imageBooks', express.static('src/site_database/imageBooks'));
 
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_SERVER)
     .then(() => console.log('The server is started')) 
     .catch(() => console.log('Server error MONGO'));
