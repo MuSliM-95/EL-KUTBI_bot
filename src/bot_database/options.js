@@ -25,14 +25,12 @@ function key() {
 
         admin_keyboardСontainer: {
             parse_mode: 'HTML',
-
+ 
             reply_markup: {
                 keyboard: [
                     [{ text: 'و عليكم السلام ورحمة الله وبركاته' }],
                     [{ text: 'Доставка и цены' }],
-                    [{ text: 'Закрыть помощник' }],
-
-
+                    [{ text: 'Закрыть помощника' }],
                 ]
             },
 
