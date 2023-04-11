@@ -5,6 +5,7 @@ const router = Router()
 
 router.use(require('./orderRouts'))
 router.use(require('./productsRouts'))
+router.use(require('./userRouts'))
 
 
 

@@ -57,21 +57,7 @@ module.exports = {
         },
 
       
-        getBasketHtml: function (basketProducts) {
-            let html
-            if (basketProducts.length === 0) {
-                return html = `<strong>Корзина</strong>\nКорзина пуста`
-
-            }
-            if (basketProducts) {
-                return html = basketProducts.map(el => {
-                    return `<strong>Корзина</strong>\n/${el.id} <strong>Название:</strong> <em>${el.name}</em> <strong>Цена:</strong> <em>${el.price}р</em> <strong>Язык:</strong> ${el.language || el.country}`
-                }).join('\n')
-            } else {
-                return html = `<strong>Корзина</strong>\nКорзина пуста`
-            }
-
-        },
+     
 
 
 

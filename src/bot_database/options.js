@@ -21,7 +21,7 @@ function key() {
                     remove_keyboard: true
                 }
             }
-        },
+        }, 
 
         admin_keyboardСontainer: {
             parse_mode: 'HTML',

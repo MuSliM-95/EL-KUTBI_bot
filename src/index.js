@@ -5,9 +5,8 @@ const cors = require('cors');
 
 const { key } = require('./bot_database/options')
 const { telegramGroups } = require('./bot_database/data')
-const { createOrder, orderGet, deleteOrderGet } = require('./bot_database/asyncFunction/orderAsync');
+const { createOrder, orderGet} = require('./bot_database/asyncFunction/orderAsync');
 const { createUser } = require('./bot_database/asyncFunction/userAsync');
-const { getBasket } = require('./bot_database/asyncFunction/basketAsync');
 
 
 require('dotenv').config()
@@ -15,6 +14,8 @@ require('dotenv').config()
 let order = Boolean 
  
 // Работа с MongoDB================>
+
+const port = process.env.PORT || 9090
 const app = express()
 
 app.use(express.json());
@@ -24,17 +25,18 @@ app.use(cors())
 app.use(require('./site_database/dataRouts'))
 app.use('/src/site_database/imageBooks', express.static('src/site_database/imageBooks'));
 
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_SERVER)
     .then(() => console.log('The server is started')) 
     .catch(() => console.log('Server error MONGO'));
 
-app.listen(process.env.PORT, () => {
+app.listen(port, () => {
     console.log(
-        `The server is started successfully: http://localhost:${process.env.PORT}`
-    );
+        `The server is started successfully: http://localhost:${port}`
+    );     
 });  
 // ================================>
-  
+   
 
 
 const bot = new TelegramApi(process.env.TOKEN, { polling: true })

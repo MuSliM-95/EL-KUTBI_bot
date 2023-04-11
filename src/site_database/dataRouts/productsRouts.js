@@ -7,4 +7,4 @@ const router = Router()
 router.get('/products', ProductController.getProducts)
 router.post('/products/post', upload.single('image'),   ProductController.postProduct)
 
-module.exports = router 
+module.exports = router  
