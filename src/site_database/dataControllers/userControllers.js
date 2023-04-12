@@ -25,9 +25,8 @@ module.exports.userController = {
 
   codeActivation: async (req, res) => {
     try {
-      const { phoneNumber, code } = req.body;
-      const user = await User.findOneAndUpdate(
-        { phoneNumber, code },
+      const { phoneNumber } = req.body;
+      const user = await User.findOneAndUpdate( { phoneNumber },
         {
           code: "verified",
         },
