@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_SERVER)
     .then(() => console.log('The server is started')) 
     .catch(() => console.log('Server error MONGO'));
 
-app.listen(port, () => {
+app.listen(port, () => { 
     console.log(
         `The server is started successfully: http://localhost:${port}`
     );     

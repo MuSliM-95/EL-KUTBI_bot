@@ -11,17 +11,7 @@ const userSchema = mongoose.Schema({
   firstName: String,
   lastName: String,
   patronymic: String,
-  data: Number,
-  favourites: [
-    {
-      ref: "Product",
-      type: mongoose.SchemaTypes.ObjectId,
-    },
-  ],
-  basketId: {
-    ref: "Basket",
-    type: mongoose.SchemaTypes.ObjectId,
-  },
+  data: Number, 
 });
 
 const User = mongoose.model("User", userSchema);
