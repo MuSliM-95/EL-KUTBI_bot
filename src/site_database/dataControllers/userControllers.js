@@ -36,7 +36,7 @@ module.exports.userController = {
     } catch (error) {
       console.log(error.message);
     }
-  },
+  }, 
 
   getUsers: async (req, res) => {
     try {
