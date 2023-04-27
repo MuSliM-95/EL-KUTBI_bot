@@ -26,12 +26,12 @@ app.use(cors())
 app.use(require('./site_database/dataRouts'))
 app.use('/src/site_database/imageBooks', express.static('src/site_database/imageBooks'));
 
-
+// mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_SERVER)
     .then(() => console.log('The server is started')) 
     .catch(() => console.log('Server error MONGO'));
 
-app.listen(port, () => { 
+app.listen(port, () => {
     console.log(
         `The server is started successfully: http://localhost:${port}`
     );     
@@ -70,11 +70,7 @@ const start = async () => {
                     disable_web_page_preview: true
                 })
                 break
-            
-            case 'Показать корзину':
-                getBasket(bot, id, username)
-                break
-
+      
             case 'Связаться с поддержкой':
                 await bot.sendMessage(id, 'Подождите немного я отправлю уведомление как только освободится к вам, подойдет наш специалист', key().options.closeTheKeyboard)
                 await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id)

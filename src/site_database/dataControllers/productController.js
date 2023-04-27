@@ -3,12 +3,23 @@ const Product = require("../models/productModel");
 module.exports.ProductController = {
   getProducts: async (req, res) => {
     try {
-      const products = await Product.find();
-      res.json(products);
+      const { productType, count } = req.params;
+      let products;
+      let arrayLength;
+      if (productType === "null") {
+        arrayLength = await Product.find().count();
+        products = await Product.find().limit(Number(count));
+      }
+      if (productType !== "null") {
+        arrayLength = await Product.find({productType}).count();
+        products = await Product.find({ productType }).limit(Number(count));
+      }
+      res.json({ products, arrayLength });
     } catch (error) {
       res.json(error.message);
-    }
+    } 
   },
+
   postProduct: async (req, res) => {
     const {
       name,

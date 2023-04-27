@@ -11,12 +11,11 @@ const sendMessage = async (number, code) => {
 
   await iqsms
     .send(message, function (err, data) {
-      console.log(err, data);
+      console.log(err, data); 
     })
     .finally(function (err, data) {
       console.log(err, data);
     });
-  return code;
 }; 
 
 module.exports = { sendMessage };

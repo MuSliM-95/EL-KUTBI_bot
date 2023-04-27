@@ -48,18 +48,10 @@ module.exports = {
   Прикрепить комментарии к заказу: <i>Пример</i></strong>
         
         `,
-
-
         orderFunction: async function (data) {
             return `
          <strong>Заказ: <em>${data.userName}</em></strong>
          `
         },
-
-      
-     
-
-
-
     }
 }
