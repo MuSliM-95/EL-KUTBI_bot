@@ -6,7 +6,7 @@ const cors = require('cors');
 const { key } = require('./bot_database/options')
 const { telegramGroups } = require('./bot_database/data')
 const { createOrder, orderGet} = require('./bot_database/asyncFunction/orderAsync');
-const { createUser } = require('./bot_database/asyncFunction/userAsync');
+
 
 
 
@@ -59,7 +59,6 @@ const start = async () => {
         switch (text) {
             case '/start':
                 await bot.sendMessage(id, telegramGroups.infoFunction(first_name), username === 'HeIIoW0RID' ? key().admin_keyboardСontainer : key().options);
-                createUser(username)
                 break
             case 'و عليكم السلام ورحمة الله وبركاته':
                 await bot.sendMessage(id, 'Чем я могу вам помочь?')

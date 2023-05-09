@@ -29,7 +29,7 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-    firm: String,
+    firm: String, 
     Author: String,
     productType: String
 })

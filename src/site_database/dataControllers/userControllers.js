@@ -13,7 +13,7 @@ module.exports.userController = {
         phoneNumber,
         code: code,
       });
-      sendMessage(phoneNumber, code);
+      // sendMessage(phoneNumber, code);
       return res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -78,15 +78,44 @@ module.exports.userController = {
       });
       return res.status(200).json({ userId: payload.id, token });
     } catch (error) {
-      return res.json(error.message)
-    
-    }  
+      return res.json(error.message);
+    }
   },
 
   getUsers: async (req, res) => {
     try {
       const users = await User.find();
       return res.status(200).json(users);
+    } catch (error) {
+      console.log(error.message);
+      return res.json(error);
+    }
+  },
+  getUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      return res.status(200).json(user);
+    } catch (error) {
+      console.log(error.message);
+      return res.json(error);
+    }
+  },
+
+  patchUsers: async (req, res) => {
+    try {
+      const { contact } = req.body;
+      const {unrestricted_value} = req.body.name;
+      const { value } = req.body.address;
+      const {postal_code } = req.body.address.data;
+
+      const user = await User.findByIdAndUpdate(req.params.id, {
+        name: unrestricted_value, 
+        address: value,
+        postal_code,
+        contact
+      },{new: true});
+      console.log(user);
+      return res.status(200).json(user)
     } catch (error) {
       console.log(error.message);
       return res.json(error);
