@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendMessage } = require("../middleWares/sendingSms");
 const User = require("../models/userModel");
+const Basket = require("../models/basketModel");
+const Favorites = require("../models/favoritesModel");
 require("dotenv").config();
 
 module.exports.userController = {
@@ -50,6 +52,13 @@ module.exports.userController = {
         },
         { new: true }
       );
+console.log(user._id);
+      const basket = await Basket.create({
+        userId: user._id,
+      });
+      const favorites = await Favorites.create({
+        userId: user._id,
+      });
       const payload = {
         id: user._id,
       };
@@ -58,6 +67,7 @@ module.exports.userController = {
       });
       return res.status(200).json({ userId: payload.id, token });
     } catch (error) {
+      console.log(error.message);
       return res.json(error);
     }
   },
@@ -103,19 +113,24 @@ module.exports.userController = {
 
   patchUsers: async (req, res) => {
     try {
-      const { contact } = req.body;
-      const {unrestricted_value} = req.body.name;
+      const { contact, recipientNumber } = req.body;
+      const { unrestricted_value } = req.body.name;
       const { value } = req.body.address;
-      const {postal_code } = req.body.address.data;
+      const { postal_code } = req.body.address.data;
 
-      const user = await User.findByIdAndUpdate(req.params.id, {
-        name: unrestricted_value, 
-        address: value,
-        postal_code,
-        contact
-      },{new: true});
+      const user = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          name: unrestricted_value,
+          address: value,
+          postal_code,
+          contact,
+          recipientNumber,
+        },
+        { new: true }
+      );
       console.log(user);
-      return res.status(200).json(user)
+      return res.status(200).json(user);
     } catch (error) {
       console.log(error.message);
       return res.json(error);

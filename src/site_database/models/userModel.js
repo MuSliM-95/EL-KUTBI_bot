@@ -9,15 +9,16 @@ const userSchema = mongoose.Schema({
   userName: String,
   code: String,
   name: String,
-  surname:String,
-  patronymic:String,
+  surname: String,
+  patronymic: String,
   address: String,
   data: Number,
   postal_code: Number,
   contact: String,
+  recipientNumber: String,
   messengers: String,
 });
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = User; 

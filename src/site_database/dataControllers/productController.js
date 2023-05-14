@@ -11,13 +11,13 @@ module.exports.ProductController = {
         products = await Product.find().limit(Number(count));
       }
       if (productType !== "null") {
-        arrayLength = await Product.find({productType}).count();
+        arrayLength = await Product.find({ productType }).count();
         products = await Product.find({ productType }).limit(Number(count));
       }
       res.json({ products, arrayLength });
     } catch (error) {
       res.json(error.message);
-    } 
+    }
   },
 
   postProduct: async (req, res) => {
@@ -48,6 +48,23 @@ module.exports.ProductController = {
         productType,
       });
       res.json(data);
+    } catch (error) {
+      res.json(error.message);
+    }
+  },
+
+  patchProducts: async (req, res) => {
+    try {
+      const { quantity, availability } = req.body;
+      const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          quantity,
+          availability,
+        },
+        { new: true }
+      );
+      return res.json(product);
     } catch (error) {
       res.json(error.message);
     }

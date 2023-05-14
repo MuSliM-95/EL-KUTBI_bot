@@ -1,10 +1,15 @@
-const Router = require('express')
-const {ProductController} = require('../dataControllers/productController')
-const upload = require('../middleWares/upload')
+const Router = require("express");
+const { ProductController } = require("../dataControllers/productController");
+const upload = require("../middleWares/upload");
 
-const router = Router()
+const router = Router();
 
-router.get('/products/:productType/:count', ProductController.getProducts)
-router.post('/products/post', upload.single('image'),   ProductController.postProduct)
+router.get("/products/:productType/:count", ProductController.getProducts);
+router.post(
+  "/products/post",
+  upload.single("image"),
+  ProductController.postProduct
+);
+router.patch("/products/:id", ProductController.patchProducts);
 
-module.exports = router  
+module.exports = router;
