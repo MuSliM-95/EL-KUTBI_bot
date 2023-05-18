@@ -10,7 +10,7 @@ module.exports.basketController = {
         { userId: req.params.id },
         {
           basket: basketArray, 
-          // basket: []
+          // basket: [] 
         },
         { new: true }
       );
