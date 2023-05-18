@@ -6,10 +6,11 @@ const router = Router();
 
 router.get("/products/:productType/:count", ProductController.getProducts);
 router.post(
-  "/products/post",
+  "/products",
   upload.single("image"),
   ProductController.postProduct
 );
-router.patch("/products/:id", ProductController.patchProducts);
+router.patch("/products/:id", upload.single("image"), ProductController.patchProducts);
 
 module.exports = router;
+ 

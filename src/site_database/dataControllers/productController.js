@@ -27,22 +27,21 @@ module.exports.ProductController = {
       language,
       price,
       quantity,
+      availability,
       firm,
       Author,
       productType,
     } = req.body;
-    const { filename } = req.file;
     const product = (await Product.find()).length;
     try {
       const data = await Product.create({
-        image: filename,
-        imageSrc: req.file ? req.file.path : "",
         name,
         id: product + 1,
         country,
         language,
         price,
         quantity,
+        availability,
         firm,
         Author,
         productType,
@@ -51,21 +50,32 @@ module.exports.ProductController = {
     } catch (error) {
       res.json(error.message);
     }
-  },
+  }, 
 
   patchProducts: async (req, res) => {
     try {
       const { quantity, availability } = req.body;
+      const { filename } = req.file;
+      const { path } = req.file;
+      console.log(req);
       const product = await Product.findByIdAndUpdate(
         req.params.id,
         {
           quantity,
           availability,
+          $push: {
+            image: {
+              image: filename,
+              imageSrc: req.file ? path : "",
+            },
+          },
+          // image: [] ,  
         },
         { new: true }
       );
       return res.json(product);
     } catch (error) {
+      console.log(error.message);
       res.json(error.message);
     }
   },
