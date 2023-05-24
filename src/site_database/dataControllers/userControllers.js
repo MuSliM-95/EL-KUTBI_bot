@@ -3,28 +3,34 @@ const jwt = require("jsonwebtoken");
 const { sendMessage } = require("../middleWares/sendingSms");
 const User = require("../models/userModel");
 const Basket = require("../models/basketModel");
-const Favorites = require("../models/favoritesModel");
+const Favorite = require("../models/favoritesModel");
 require("dotenv").config();
 
 module.exports.userController = {
   userRegistrationController: async (req, res) => {
     try {
-      const code = Math.floor(1000 + Math.random() * 9000).toString();
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
       const { phoneNumber } = req.body;
       const user = await User.create({
         phoneNumber,
         code: code,
       });
-      sendMessage(phoneNumber, code);
+      // sendMessage(phoneNumber, code); 
       return res.status(200).json(user);
     } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+      console.log(error.message);
+      return res.json(error.message);
+    } 
   },
 
   codeActivation: async (req, res) => {
     try {
-      const { phoneNumber } = req.body;
+      const {code, phoneNumber } = req.body;
+      const userCode = await User.findOne({phoneNumber})
+      if(code !== userCode.code) {
+        return res.status(401).json({error: "Неверный код"});
+
+      }
       const user = await User.findOneAndUpdate(
         { phoneNumber },
         {
@@ -35,6 +41,7 @@ module.exports.userController = {
       return res.status(200).json(user);
     } catch (error) {
       console.log(error.message);
+      return res.json(error.message);
     }
   },
 
@@ -52,11 +59,10 @@ module.exports.userController = {
         },
         { new: true }
       );
-console.log(user._id);
       const basket = await Basket.create({
         userId: user._id,
       });
-      const favorites = await Favorites.create({
+      const favorites = await Favorite.create({
         userId: user._id,
       });
       const payload = {
@@ -68,7 +74,7 @@ console.log(user._id);
       return res.status(200).json({ userId: payload.id, token });
     } catch (error) {
       console.log(error.message);
-      return res.json(error);
+      return res.json(error.message);
     }
   },
 
@@ -78,16 +84,17 @@ console.log(user._id);
       const user = await User.findOne({ phoneNumber });
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) {
-        return res.staus(400).json("Неверный пароль");
+        return res.status(401).json({error: "Неверный пароль"});
       }
       const payload = {
         id: user._id,
       };
       const token = await jwt.sign(payload, process.env.SECRET, {
-        expiresIn: "24h",
+        expiresIn: "7d",
       });
       return res.status(200).json({ userId: payload.id, token });
     } catch (error) {
+      console.log(error.message);
       return res.json(error.message);
     }
   },
@@ -132,7 +139,26 @@ console.log(user._id);
       return res.status(200).json(user);
     } catch (error) {
       console.log(error.message);
-      return res.json(error);
+      return res.json(error.message);
+    }
+  },
+
+  deleteUsers: async (req, res) => {
+    try {
+      const { userId, phoneNumber, password } = req.body;
+      const user = await User.findOne({phoneNumber})
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) {
+        return res.staus(400).json("Неверный пароль");
+      }
+      const userProfile = await User.findOneAndDelete({ phoneNumber });
+      const userBasket = await Basket.findOneAndDelete({userId})
+      const userFavorites = await Favorite.findOneAndDelete({userId})
+
+      return res.json("Пользователь удален");
+    } catch (error) {
+      console.log(error.message);
+      return res.json(error.message);
     }
   },
 };
