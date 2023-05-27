@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
   contact: String,
   recipientNumber: String,
   messengers: String,
+
 });
 
 const User = mongoose.model("User", userSchema);

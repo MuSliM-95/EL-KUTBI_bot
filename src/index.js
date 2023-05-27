@@ -2,17 +2,16 @@ const TelegramApi = require("node-telegram-bot-api");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 const { key } = require("./bot_database/options");
 const { telegramGroups } = require("./bot_database/data");
+const { orderGet } = require("./bot_database/asyncFunction/orderAsync");
 const {
-  createOrder,
-  orderGet,
-} = require("./bot_database/asyncFunction/orderAsync");
+  createChat,
+  patchChat,
+  getChat,
+} = require("./bot_database/asyncFunction/chatAsyncFunc");
 
 require("dotenv").config();
-
-let order = Boolean;
 
 // Работа с MongoDB================>
 
@@ -49,6 +48,7 @@ const start = async () => {
     const { first_name, username } = msg.from;
     const { text } = msg;
     const { message_id } = msg;
+    let support = await getChat(id);
 
     switch (text) {
       case "/start":
@@ -59,6 +59,7 @@ const start = async () => {
             ? key().admin_keyboardСontainer
             : key().options
         );
+        createChat(id);
         break;
       case "و عليكم السلام ورحمة الله وبركاته":
         await bot.sendMessage(id, "Чем я могу вам помочь?");
@@ -74,8 +75,16 @@ const start = async () => {
         await bot.sendMessage(
           id,
           "Подождите немного я отправлю уведомление как только освободится к вам, подойдет наш специалист",
-          key().options.closeTheKeyboard
+          key().chat_keyboard
         );
+        await patchChat(id, true);
+
+        await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
+        break;
+      case "Завершить диалог":
+        await bot.sendMessage(id, "Диалог завершен", key().options);
+        support = await patchChat(id, false);
+
         await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
         break;
       case "Закрыть помощника":
@@ -86,56 +95,15 @@ const start = async () => {
         );
         break;
       default:
-        if (username !== "HeIIoW0RID") {
-          if (!order) {
-            await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
-          }
-        } else if (order) {
-          if (username !== "HeIIoW0RID") {
-            await createOrder(username, text, id, bot);
-            // telegramGroups.orderFunction(bot, username, text, id)
-            // order = false
-            await orderGet(bot, id, username);
-          }
-        } else if (msg.reply_to_message) {
-          if (username === "HeIIoW0RID") {
-            if (msg.voice) {
-              await bot.forwardMessage(
-                msg.reply_to_message.forward_from.id,
-                process.env.ADMIN_CHAT,
-                message_id,
-                { drop_author: false }
-              );
-            } else {
-              await bot.sendMessage(msg.reply_to_message.forward_from.id, text);
-            }
-          }
+        if (support && username !== "HeIIoW0RID") {
+          await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
         }
-
+        if (msg.reply_to_message) {
+          await bot.sendMessage(msg.reply_to_message.forward_from.id, text);
+        }
         break;
     }
   });
 
-  // bot.on('callback_query', async query  => {
-  //     let data = JSON.parse(query.data)
-  //     try {
-  //         const { username } = query.from
-  //         const { type, book } = data
-  //         const {id} = query.message.chat
-
-  //         if (type === 'ADD_BOOK') {
-
-  //         }
-  //         else if (type === 'DELETE_BOOK') {
-
-  //         }
-  //         else if (type === 'BOOKS') {
-
-  //         }
-  //     } catch (error) {
-  //         console.log(error.message);
-  //     }
-
-  // })
 };
 start();

@@ -3,25 +3,6 @@ const { telegramGroups } = require('../data')
 const { key } = require('../options')
 
 
-
-async function createOrder(userName, text, chat) {
-    try {
-        const order = await Order.create({
-            userName,
-            text,
-            chat,
-            date: new Date().getTime()
-        })
-
-    } catch (error) {
-        console.log(error.message);
-    }
-
- 
-}
-
-
-
 async function orderGet(bot, id, username) {
     try {
         const data = await Order.findOne({ userName: username })
@@ -52,4 +33,4 @@ async function deleteOrderGet(username) {
 }
 
 
-module.exports = { createOrder, orderGet, deleteOrderGet }
+module.exports = { orderGet, deleteOrderGet }
