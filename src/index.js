@@ -95,21 +95,21 @@ const start = async () => {
         );
         break;
       default:
-        console.log(msg);
         if (support && username !== "HeIIoW0RID") {
-       return   await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
+          return await bot.forwardMessage(
+            process.env.ADMIN_CHAT,
+            id,
+            message_id
+          );
         }
         if (msg.reply_to_message.forward_from) {
-         return await bot.sendMessage(
-              msg.reply_to_message.forward_from.id,
+          return await bot.sendMessage(
+            msg.reply_to_message.forward_from.id,
             text
           );
         }
-        if(msg.reply_to_message.chat){
-        return  await bot.sendMessage(
-            msg.reply_to_message.chat.id,
-          text
-        );
+        if (msg.reply_to_message.chat) {
+          return await bot.sendMessage(msg.reply_to_message.chat.id, text);
         }
         break;
     }
