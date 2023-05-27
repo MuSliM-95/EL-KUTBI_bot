@@ -9,7 +9,7 @@ function key() {
           [
             {
               text: "Оформить заказ",
-              web_app: { url: "https://el-kutbi-frontend.onrender.com" },
+              web_app: { url: "https://el-kutbi-frontend.onrender.com/" },
             },
           ],
           [{ text: "Связаться с поддержкой" }],
