@@ -1,9 +1,11 @@
 const Chat = require("../../site_database/models/chatModel");
 
-async function createChat(chatId) {
+async function createChat(chatId, username, first_name) {
   try {
     const chat = await Chat.create({
       chatId,
+      username,
+      first_name
     });
   } catch (error) {
     console.log(error.message);

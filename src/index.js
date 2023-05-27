@@ -59,7 +59,7 @@ const start = async () => {
             ? key().admin_keyboardСontainer
             : key().options
         );
-        createChat(id);
+        createChat(id, username, first_name);
         break;
       case "و عليكم السلام ورحمة الله وبركاته":
         await bot.sendMessage(id, "Чем я могу вам помочь?");
@@ -95,15 +95,24 @@ const start = async () => {
         );
         break;
       default:
+        console.log(msg);
         if (support && username !== "HeIIoW0RID") {
-          await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
+       return   await bot.forwardMessage(process.env.ADMIN_CHAT, id, message_id);
         }
-        if (msg.reply_to_message) {
-          await bot.sendMessage(msg.reply_to_message.forward_from.id, text);
+        if (msg.reply_to_message.forward_from) {
+         return await bot.sendMessage(
+              msg.reply_to_message.forward_from.id,
+            text
+          );
+        }
+        if(msg.reply_to_message.chat){
+        return  await bot.sendMessage(
+            msg.reply_to_message.chat.id,
+          text
+        );
         }
         break;
     }
   });
-
 };
 start();
