@@ -3,8 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { key } = require("./bot_database/options");
-const { telegramGroups } = require("./bot_database/data");
-const { orderGet } = require("./bot_database/asyncFunction/orderAsync");
+const { telegramGroups, supportChat } = require("./bot_database/data");
 const {
   createChat,
   patchChat,
@@ -46,8 +45,7 @@ const start = async () => {
   bot.on("message", async (msg) => {
     const { id } = msg.chat;
     const { first_name, username } = msg.from;
-    const { text } = msg;
-    const { message_id } = msg;
+    const { message_id, text } = msg;
     let support = await getChat(id);
 
     switch (text) {
@@ -95,22 +93,7 @@ const start = async () => {
         );
         break;
       default:
-        if (support && username !== "HeIIoW0RID") {
-          return await bot.forwardMessage(
-            process.env.ADMIN_CHAT,
-            id,
-            message_id
-          );
-        }
-        if (msg.reply_to_message.forward_from) {
-          return await bot.sendMessage(
-            msg.reply_to_message.forward_from.id,
-            text
-          );
-        }
-        if (msg.reply_to_message.chat) {
-          return await bot.sendMessage(msg.reply_to_message.chat.id, text);
-        }
+        await supportChat(msg, support, username, bot);
         break;
     }
   });

@@ -1,9 +1,7 @@
-
 module.exports = {
-
-    telegramGroups: {
-        infoFunction: function (name) {
-            return `
+  telegramGroups: {
+    infoFunction: function (name) {
+      return `
 <strong>السلام عليكم ورحمة الله وبركاته ${name}</strong>
 
 <strong>Мы приветствуем вас в онлайн магазине EL-KUTBI.</strong>
@@ -13,11 +11,10 @@ module.exports = {
 
 <em>💄А так же натуральную уходовую косметику от египетской фирмы Nefertari.</em> 
     
-    `
-        }, 
- 
- 
-        deliveryAndPrices: ` 
+    `;
+    },
+
+    deliveryAndPrices: ` 
         <strong>Доставка</strong> 
 
 <em>🚐 До Берката бесплатно</em>  
@@ -34,24 +31,102 @@ module.exports = {
 
 <em><a href="https://t.me/elkutbi">🔗 EL-KUTBI</a> </em> 
         `,
+  },
 
-        orderSample:
-            ` 
-<strong>Заказ</strong> 
+  supportChat: async function (msg, support, username, bot) {
+    const {
+        message_id,
+        text,
+        photo,
+        voice,
+        video,
+        document,
+        contact,
+        location,
+        poll
+      } = msg;
+      const {id} = msg.chat
+      
+      if (support && username !== "HeIIoW0RID") {
 
-<strong>Ведите ваши данные таком формате ⬇️</strong>
+        return await bot.forwardMessage(
+          process.env.ADMIN_CHAT,
+          id,
+          message_id
+        );
+      }
 
-<strong>
- Ф.И.О: <em> Архиев Магомед Хадидович,</em>
- Адрес: <i> Чеченская республика, Ачхой-мартановский район, село Самашки, улица магомадова 35.</i>
- Книги: <i>Исбату аль-хадди Лиллах,  Кашфу аш-Шубухат,</i>
-  Прикрепить комментарии к заказу: <i>Пример</i></strong>
-        
-        `,
-        orderFunction: async function (data) {
-            return `
-         <strong>Заказ: <em>${data.userName}</em></strong>
-         `
-        },
-    }
-}
+      if (
+        msg.reply_to_message.forward_from &&
+        !photo &&
+        !voice &&
+        !video &&
+        !document &&
+        !contact &&
+        !location && 
+        !poll
+      ) {
+
+        return await bot.sendMessage(
+          msg.reply_to_message.forward_from.id,
+          text
+        );
+      }
+
+      if (photo && msg.reply_to_message.forward_from) {
+        return await bot.sendPhoto(
+          msg.reply_to_message.forward_from.id,
+          photo[0].file_id
+        );
+      }
+
+      if (
+        msg.reply_to_message.chat &&
+        msg.reply_to_message.chat.id !== Number(process.env.ADMIN_CHAT)
+      ) {
+        return await bot.sendMessage(msg.reply_to_message.chat.id, text);
+      }
+
+      if (voice && msg.reply_to_message.forward_from) {
+        return await bot.sendVoice(
+          msg.reply_to_message.forward_from.id,
+          msg.voice.file_id,
+          { duration: msg.voice.duration }
+        );
+      }
+
+      if (video && msg.reply_to_message.forward_from) {
+        return await bot.sendVideo(
+          msg.reply_to_message.forward_from.id,
+          video.file_id,
+          { duration: video.duration }
+        );
+      }
+
+      if (document && msg.reply_to_message.forward_from) {
+        return await bot.sendDocument(
+          msg.reply_to_message.forward_from.id,
+          document.file_id
+        );
+      }
+
+      if (contact && msg.reply_to_message.forward_from) {
+        return await bot.sendContact(
+          msg.reply_to_message.forward_from.id,
+          contact.phone_number,
+          contact.first_name,
+          contact.last_name
+        );
+      }
+      
+      if (location && msg.reply_to_message.forward_from) {
+        return await bot.sendLocation(
+          msg.reply_to_message.forward_from.id,
+          location.latitude,
+          location.longitude
+        );
+      }
+
+
+  }
+};
