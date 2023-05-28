@@ -15,7 +15,7 @@ module.exports.userController = {
         phoneNumber,
         code: code,
       });
-      // sendMessage(phoneNumber, code); 
+      sendMessage(phoneNumber, code); 
       return res.status(200).json(user);
     } catch (error) {
       console.log(error.message);
