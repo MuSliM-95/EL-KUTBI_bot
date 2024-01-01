@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { sendMessage } = require("../middleWares/sendingSms");
+const { sendMessage } = require("../middlewares/sendingSms");
 const User = require("../models/userModel");
 const Basket = require("../models/basketModel");
 const Favorite = require("../models/favoritesModel");
@@ -108,6 +108,7 @@ module.exports.userController = {
       return res.json(error);
     }
   },
+  
   getUser: async (req, res) => {
     try {
       const user = await User.findById(req.params.id);

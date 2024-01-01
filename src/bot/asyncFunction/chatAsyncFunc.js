@@ -1,4 +1,4 @@
-const Chat = require("../../site_database/models/chatModel");
+const Chat = require("../../db/models/chatModel");
 
 async function createChat(chatId, username, first_name) {
   try {

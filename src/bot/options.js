@@ -7,12 +7,12 @@ function key() {
         keyboard: [
           [{ text: "و عليكم السلام ورحمة الله وبركاته" }],
           [{ text: "Доставка и цены" }],
-          // [
-          //   {
-          //     text: "Оформить заказ",
-          //     web_app: { url: "https://el-kutbi-frontend.onrender.com/" },
-          //   },
-          // ],
+          [
+            {
+              text: "Оформить заказ",
+              web_app: { url: "https://el-kutbi-frontend.onrender.com/" },
+            },
+          ],
           [{ text: "Связаться с поддержкой" }], 
           [{ text: "Закрыть помощника" }],
         ],

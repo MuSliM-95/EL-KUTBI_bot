@@ -1,4 +1,4 @@
-const Order = require('../../site_database/models/orderModel')
+const Order = require('../../db/models/orderModel')
 const { telegramGroups } = require('../data')
 const { key } = require('../options')
 
@@ -13,12 +13,12 @@ async function orderGet(bot, id, username) {
         console.log(error.message);
     }
 
-
 }
+
 async function deleteOrderGet(username) {
     try {
          await Order.remove({ userName: username })
-        await bot.sendMessage(id, `<strong>Заказ удален</strong>`, {
+         await bot.sendMessage(id, `<strong>Заказ удален</strong>`, {
             parse_mode: 'HTML',
             disable_web_page_preview: true
 

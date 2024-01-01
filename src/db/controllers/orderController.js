@@ -31,6 +31,7 @@ module.exports.controller = {
       res.json(error.message);
     }
   },
+  
   orderGetController: async (req, res) => {
     try {
       const data = await Order.find();
@@ -39,6 +40,7 @@ module.exports.controller = {
       res.json(error.message);
     }
   },
+
   orderGetByidController: async (req, res) => {
     try {
       const data = await Order.findById(req.params.id);
@@ -47,6 +49,7 @@ module.exports.controller = {
       res.json(error.message);
     }
   },
+
   orderDeleteController: async (req, res) => {
     try {
       const data = await Order.findByIdAndRemove(req.params.id);

@@ -1,6 +1,6 @@
 const Router = require("express")
-const {favoritesController} = require("../dataControllers/favoritesController")
-const authMiddleWare = require("../middleWares/authMiddleWare")
+const {favoritesController} = require("../controllers/favoritesController")
+const authMiddleWare = require("../middlewares/authMiddleware")
 
 const router = Router()
 

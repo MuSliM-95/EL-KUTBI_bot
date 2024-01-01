@@ -18,6 +18,7 @@ module.exports.favoritesController = {
       return res.json(error.message);
     } 
   },
+
   removeFavorites: async (req, res) => {  
     try {
       const { item } = req.body;
@@ -38,6 +39,7 @@ module.exports.favoritesController = {
       return res.json(error.message); 
     }
   },
+  
   getFavorites: async (req, res) => {
     try {
       const favorite = await Favorite.findOne({ userId: req.params.id });

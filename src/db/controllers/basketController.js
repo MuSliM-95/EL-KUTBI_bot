@@ -20,6 +20,7 @@ module.exports.basketController = {
       return res.json(error.message);
     }  
   },
+  
   getBasket: async (req, res) => { 
     try {
       const basket = await Basket.findOne({ userId: req.params.id });

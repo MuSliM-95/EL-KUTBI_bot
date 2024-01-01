@@ -3,61 +3,49 @@ const Product = require("../models/productModel");
 module.exports.ProductController = {
   getProducts: async (req, res) => {
     try {
-      const { productType, count } = req.params;
-      let products;
-      let arrayLength;
-      if (productType === "null") {
-        arrayLength = await Product.find().count();
-        products = await Product.find().limit(Number(count));
-      }
-      if (productType !== "null") {
-        arrayLength = await Product.find({ productType }).count();
-        products = await Product.find({ productType }).limit(Number(count));
-      }
+      const { count } = req.params;
+      let arrayLength = await Product.find().count();
+      let products = await Product.find().limit(Number(count));
+
       res.json({ products, arrayLength });
     } catch (error) {
       res.json(error.message);
     }
   },
 
+  getProductId: async (req, res) => {
+    try {
+      const data = await Product.findById(req.params.id);
+      res.json(data);
+    } catch (error) {
+      console.log(error);
+    } 
+  },
+
   postProduct: async (req, res) => {
-    const {
-      name,
-      country,
-      language,
-      price,
-      quantity,
-      availability,
-      firm,
-      Author,
-      productType,
-    } = req.body;
+    const { name, language, price, quantity, availability, Author } = req.body;
     const product = (await Product.find()).length;
     try {
       const data = await Product.create({
         name,
         id: product + 1,
-        country,
         language,
         price,
         quantity,
         availability,
-        firm,
         Author,
-        productType,
       });
       res.json(data);
     } catch (error) {
       res.json(error.message);
     }
-  }, 
+  },
 
   patchProducts: async (req, res) => {
     try {
       const { quantity, availability } = req.body;
       const { filename } = req.file;
       const { path } = req.file;
-      console.log(req);
       const product = await Product.findByIdAndUpdate(
         req.params.id,
         {
@@ -69,7 +57,6 @@ module.exports.ProductController = {
               imageSrc: req.file ? path : "",
             },
           },
-          // image: [] ,  
         },
         { new: true }
       );
