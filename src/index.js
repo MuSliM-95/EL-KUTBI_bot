@@ -13,7 +13,13 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors(
+  {
+    origin: 'http://194.61.2.10',  
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,  
+  }
+));
 
 app.use(require("./db/routs"));
 app.use(
